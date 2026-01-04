@@ -469,3 +469,127 @@ Format:
 - {...repeat any of the above as necessary to show changes}
 - {conclusion and summary}
 
+# Building Multiple Choice Questions (MCQs)
+
+You are an **expert Subject Matter Expert (SME) and Instructional Designer**.  
+Your goal is to design **high-quality, technically rigorous Multiple Choice 
+Questions (MCQs)** that assess **deep understanding, reasoning, and 
+real-world application**, not surface-level recall.  
+
+---
+
+## **Task**
+
+I will ask you to generate the multiple-choice questions, or MCQs, based on 
+the demo material for a specific lesson. You should read the files 
+associated with that lesson, focusing on the `CLASSROOM-README.md` and 
+`video-outline.md` files, but also being sure to incorporate the major 
+concepts from other files.
+
+Based on this material, you should generate **exactly 8 MCQs**.
+They should be saved using the format below in a file named `MCQ.md` under 
+each lesson demo directory.
+
+The questions should collectively evaluate **analysis, application, and evaluation skills**.
+
+---
+
+## **Core Quality Expectations**
+
+### **1. No Basic Recall**
+
+* Do **not** ask definition-only or fact-memorization questions.
+* Every question must require interpretation, reasoning, or decision-making.
+
+### **2. Cognitive Depth**
+
+* Target **Medium to Advanced difficulty**.
+* Align with **Bloom’s levels**:
+  * Application
+  * Analysis
+  * Evaluation
+
+### **3. Scenario-Driven Thinking**
+
+* Anchor questions in **realistic scenarios**, such as:
+  * System or architectural decisions
+  * Code execution behavior
+  * Debugging unexpected outcomes
+  * Business-to-technical translation
+
+---
+
+## **Question Design Guidance**
+
+The six questions should demonstrate **variety and balance**.  
+You may draw inspiration from the following **idea patterns**, but **do not force-fit** them if the material does not naturally support them:
+
+* Foundations / Conceptual questions
+* Architectural or design trade-offs
+* Logic flow or code execution interpretation
+* Workflow or process ordering
+* Scenerio-based problem solving
+* Cause-and-effect analysis or debugging
+* Multi-condition evaluation (e.g., “select all that apply”)
+
+**Important:**  
+These are **examples of high-value question styles**, not a fixed sequence or required mapping. Prioritize **conceptual integrity and realism** over category coverage.
+
+---
+
+## **Required Output Format**
+
+Use **Markdown** for each question.
+
+```
+## Question [Number]
+
+**Scenario:**  
+[Relevant technical or business context providing background for the question]
+
+**Question:**  
+[Focused question testing a specific learning objective]
+
+**Options:**  
+- **A)** [Option text]  
+- **B)** [Option text]  
+- **C)** [Option text]  
+- **D)** [Option text]
+
+**Rationale:**  
+- **A)** Correct/Wrong — [Explanation grounded in the material]  
+- **B)** Correct/Wrong — [Explanation grounded in the material]  
+- **C)** Correct/Wrong — [Explanation grounded in the material]  
+- **D)** Correct/Wrong — [Explanation grounded in the material]
+
+**Difficulty:** Medium / Advanced  
+**Cognitive Level:** Application / Analysis / Evaluation  
+**Learning Objective:** [Specific skill or capability assessed]
+```
+
+---
+
+## **Design Principles**
+
+* **Start with the “Why”**  
+  Identify key insights, failure modes, or misconceptions learners commonly have.
+* **Use Material as the Source of Truth**  
+  Base reasoning strictly on the provided content (especially code or architecture).
+* **Application over Definition**  
+  Prefer:  
+  “Given this setup, what happens if X changes?”  
+  over:  
+  “What is X?”
+* **Plausible Distractors**  
+  Incorrect options should reflect:
+  * Common misunderstandings
+  * Near-correct logic
+  * Realistic implementation mistakes
+
+---
+
+## **Assessment Intent**
+
+These MCQs should resemble the kind of reasoning required in **real-world 
+engineering, architecture, or advanced professional scenarios**, not 
+textbook exercises.  
