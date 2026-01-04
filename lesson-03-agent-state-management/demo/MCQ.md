@@ -164,3 +164,69 @@ Select the correct function of this syntax.
 **Cognitive Level:** Conceptual  
 **Learning Objective:** Understand dynamic prompt injection syntax.
 
+## Question 6
+
+**Scenario:**  
+Your tool successfully updates `temp:stage` to "END", but instead of replying to
+the user, the agent calls the tool again with `command="SHOW"`, causing an
+infinite loop or unnecessary extra step.
+
+**Question:**  
+What is the most likely missing component in your `agent-prompt.txt`?
+
+**Options:**
+
+- **A)** You forgot to remove the `{temp:stage?}` placeholder.
+- **B)** You missed an explicit instruction telling the agent what to do when
+  the state reaches "END".
+- **C)** The "END" string must be uppercase for the LLM to recognize it.
+- **D)** You need to manually call `sys.exit()` in your Python tool.
+
+**Rationale:**
+
+- **A)** Wrong — The placeholder is needed to show the current state.
+- **B)** Correct — The LLM follows instructions. Even if the state is "END", if
+  the prompt doesn't say "Stop when END", the LLM might think "I need to do
+  something else" or "I should double-check". Explicit termination conditions
+  are crucial for state machines driven by LLMs.
+- **C)** Wrong — LLMs are generally case-insensitive regarding semantic meaning,
+  though consistency helps.
+- **D)** Wrong — Tools should never exit the process; they just return data.
+
+**Difficulty:** Medium  
+**Cognitive Level:** Analysis  
+**Learning Objective:** Implement a simple state machine using ADK tools.
+
+## Question 7
+
+**Scenario:**  
+User A and User B are both interacting with your "Color Mixer" agent at the
+exact same time. User A issues a command that sets their `temp:stage` to "RED".
+User B then immediately sends their first message "Start mixing".
+
+**Question:**  
+What value for `temp:stage` will be injected into the prompt for User B's
+request?
+
+**Options:**
+
+- **A)** "RED" — The state is shared globally across the agent instance.
+- **B)** "BLACK" (or None) — `temp:` state is isolated to the specific
+  request/user context.
+- **C)** "RED" — But only if they are on the same WiFi network.
+- **D)** It alternates between "RED" and "BLACK" depending on the thread
+  scheduler.
+
+**Rationale:**
+
+- **A)** Wrong — This would be a major race condition and security flaw.
+- **B)** Correct — `temp:` state is request-scoped (and by extension,
+  thread/context-safe). One user's temporary calculation state does not leak
+  into another user's request.
+- **C)** Wrong — Network has no bearing on internal memory scope.
+- **D)** Wrong — The ADK handles context isolation.
+
+**Difficulty:** Medium  
+**Cognitive Level:** Conceptual  
+**Learning Objective:** Understand the concept of "temp:" state for
+request-scoped variables.
