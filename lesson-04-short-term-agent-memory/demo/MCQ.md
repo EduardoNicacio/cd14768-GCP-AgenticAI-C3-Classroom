@@ -67,40 +67,6 @@ session-scoped and user-scoped state in ADK.
 ## Question 3
 
 **Scenario:**  
-A developer mistakenly uses `user:current_step` to track progress in a
-multi-step wizard.
-A user gets stuck on Step 3 and rage-quits (closes the browser).
-They come back the next day to try again.
-
-**Question:**  
-What happens, and why is this likely a poor user experience?
-
-**Options:**
-
-- **A)** The wizard starts at Step 1, which is fine.
-- **B)** The wizard starts at Step 3 immediately, potentially without context or
-  the necessary previous data, confusing the user.
-- **C)** The agent refuses to talk to the user.
-- **D)** The database crashes because of a stale lock.
-
-**Rationale:**
-
-- **A)** Wrong — That would happen if it were session-scoped.
-- **B)** Correct — Because `user:` state persists, the "current_step" is still
-  3. The agent might immediately ask "What is your credit card?" (Step 3)
-  without introducing itself or confirming the item (Steps 1 & 2), which feels
-  broken.
-- **C)** Wrong.
-- **D)** Wrong.
-
-**Difficulty:** Medium  
-**Cognitive Level:** Analysis  
-**Learning Objective:** Observe how persistent user preferences affect agent
-behavior across multiple sessions.
-
-## Question 4
-
-**Scenario:**  
 You are using `run_task` from the demo.
 `current_iteration` is session-scoped.
 The user chats for a while, reaching iteration 5.
@@ -134,7 +100,7 @@ Assuming the ADK uses in-memory storage, what happens to
 **Cognitive Level:** Evaluation  
 **Learning Objective:** Understand the limitations of memory-based storage.
 
-## Question 5
+## Question 4
 
 **Scenario:**  
 Why do we "bootstrap" the prompt with `{user:num_iterations_instructions?}`
@@ -164,3 +130,72 @@ Select the best design reason.
 **Difficulty:** Advanced  
 **Cognitive Level:** Analysis  
 **Learning Objective:** Use state to control a multi-step conversation flow.
+
+
+## Question 5
+
+**Scenario:**  
+Your agent has a tool `calculate_tax` that computes the tax for a specific
+purchase request.
+If you store the result in `tax_amount` (session scope) instead of
+`temp:tax_amount` (request scope), what potential bug could occur?
+
+**Question:**  
+Select the most likely issue.
+
+**Options:**
+
+- **A)** The tax amount will be lost before the agent can answer the user.
+- **B)** The tax calculation will take twice as long.
+- **C)** If the user asks a follow-up question about a *different* item without
+  triggering a new calculation, the agent might hallucinate or use the *old*
+  `tax_amount` from the previous turn.
+- **D)** Session scope is read-only, so the tool will crash.
+
+**Rationale:**
+
+- **A)** Wrong — Session scope persists longer than temp.
+- **B)** Wrong.
+- **C)** Correct — Session scope persists across the *entire conversation*.
+  Intermediate calculation values that are specific to a single interaction (
+  like the tax for one specific item) should be cleared (using `temp:`) so they
+  don't pollute the context for subsequent unrelated queries.
+- **D)** Wrong.
+
+**Difficulty:** Medium  
+**Cognitive Level:** Analysis  
+**Learning Objective:** Understand the difference between request-scoped,
+session-scoped and user-scoped state in ADK.
+
+## Question 6
+
+**Scenario:**  
+An agent has two state variables set:
+
+1. `state["theme"] = "blue"`
+2. `state["user:theme"] = "red"`
+
+**Question:**  
+When the agent reads `state["theme"]`, what value does it get, and why?
+
+**Options:**
+
+- **A)** "red" — because User scope overrides Session scope.
+- **B)** "blue" — because it looks for they key match in the Session scope.
+- **C)** "purple" — because they mix.
+- **D)** It raises an `AmbiguousKeyError`.
+
+**Rationale:**
+
+- **A)** Wrong — Scopes are namespaces, not an inheritance hierarchy where one
+  automatically shadows the other without explicit logic.
+- **B)** Correct — In ADK state, keys are literal. `theme` and `user:theme` are
+  two completely different keys in the underlying storage. Accessing `theme`
+  retrieves the session-scoped variable.
+- **C)** Wrong.
+- **D)** Wrong.
+
+**Difficulty:** Medium  
+**Cognitive Level:** Conceptual  
+**Learning Objective:** Understand the difference between request-scoped,
+session-scoped and user-scoped state in ADK.
