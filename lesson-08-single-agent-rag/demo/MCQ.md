@@ -45,7 +45,7 @@ What is the most likely reason for the empty search results?
 **Options:**
 
 - **A)** The documents have not finished indexing.
-- **B)** The agent's `model` parameter is set to `gemini-1.5-pro` instead of
+- **B)** The agent's `model` parameter is set to `gemini-2.5-pro` instead of
   `flash`.
 - **C)** You forgot to enable the "PDF Parser" API.
 - **D)** The GCS bucket permissions are set to private.
@@ -92,8 +92,8 @@ Which feature of the Vertex AI Search (Discovery Engine) configuration in
 - **A)** Wrong — "Earnings" is spelled correctly, so spell correction isn't the
   primary factor.
 - **B)** Correct — Query Expansion automatically expands terms to include
-  synonyms and related concepts (like mapping "earnings" to "revenue" or "
-  profit"), improving recall for semantic matches.
+  synonyms and related concepts (like mapping "earnings" to "revenue" or
+  "profit"), improving recall for semantic matches.
 - **C)** Wrong — Page size only affects the count of results.
 - **D)** Wrong — The wrapper just calls the API; it doesn't add intelligence.
 
@@ -105,63 +105,22 @@ specs, query expansion).
 ## Question 4
 
 **Scenario:**  
-You are reviewing the `datastore.py` code. You notice the `serving_config`
-variable is constructed using `default_config`.
-
-```python
-serving_config = f"projects/{project_id}/.../servingConfigs/default_config"
-```
-
-**Question:**  
-In a complex enterprise environment where you might want to A/B test different
-search algorithms or filtering rules without changing the agent code, how would
-you leverage the `serving_config` resource?
-
-**Options:**
-
-- **A)** You cannot; `default_config` is hardcoded in the Discovery Engine API.
-- **B)** You would create multiple Serving Configs in the Google Cloud Console
-  and update the environment variable/code to point to the desired config ID (
-  e.g., `test_config`).
-- **C)** You would create multiple GCS buckets.
-- **D)** You would pass the configuration rules as a string in the
-  `search_query` parameter.
-
-**Rationale:**
-
-- **A)** Wrong — You can create custom serving configs.
-- **B)** Correct — Serving Configs are resources that encapsulate search
-  settings (ranking, filtering, boosting). By changing the ID in the resource
-  path, you can switch logic server-side without redeploying the client code
-  logic (other than the config ID).
-- **C)** Wrong — Buckets hold data, not search logic.
-- **D)** Wrong — The query string is for user intent, not system configuration.
-
-**Difficulty:** Advanced  
-**Cognitive Level:** Application  
-**Learning Objective:** Implement a search tool using the
-`google.cloud.discoveryengine` library.
-
-## Question 5
-
-**Scenario:**  
 You have deployed your agent. A user asks a question, and the
 `datastore_search_tool` returns a list of 5 relevant text chunks. However, the
 agent's final answer ignores these chunks and provides a generic response from
 its training data.
 
 **Question:**  
-What is the most effective change to the `agent-prompt.txt` to fix this
-behavior?
+What is the most effective change to fix this behavior?
 
 **Options:**
 
 - **A)** Increase the temperature of the model to 1.0.
-- **B)** Add an instruction: "Base your answers *only* on the retrieved
-  information from the `datastore_search_tool`. If the info is not in the
-  results, say you don't know."
+- **B)** Add an instruction to your agent prompt: "Base your answers *only* on 
+  the retrieved information from the `datastore_search_tool`. If the info is 
+  not in the results, say you don't know."
 - **C)** Configure the tool to return 50 chunks instead of 5.
-- **D)** Switch the model to `gemini-1.0-pro` because it is better at RAG.
+- **D)** Switch the model to `gemini-2.5-pro` because it is better at RAG.
 
 **Rationale:**
 
@@ -179,7 +138,7 @@ behavior?
 **Learning Objective:** Connect the search tool to an ADK agent for grounded
 responses.
 
-## Question 6
+## Question 5
 
 **Scenario:**  
 You are setting up the environment variables for `datastore.py`. You have the
@@ -212,7 +171,7 @@ for a "Custom Search" app?
 **Learning Objective:** Configure Google Cloud Storage and Vertex AI Search for
 RAG.
 
-## Question 7
+## Question 6
 
 **Scenario:**  
 Your code in `datastore.py` uses `ClientOptions` to set the `api_endpoint`.
@@ -250,38 +209,3 @@ Why is this conditional logic necessary?
 **Cognitive Level:** Analysis  
 **Learning Objective:** Implement a search tool using the
 `google.cloud.discoveryengine` library.
-
-## Question 8
-
-**Scenario:**  
-You want to switch your RAG source from "Unstructured PDFs" to a "Structured SQL
-Database" (e.g., BigQuery).
-
-**Question:**  
-Which part of the architecture described in this lesson would change the
-*least*?
-
-**Options:**
-
-- **A)** The setup in Vertex AI Agent Builder (Data Store type).
-- **B)** The `datastore_search_tool` function signature (inputs/outputs) and the
-  Agent's interaction with it.
-- **C)** The internal logic of `search()` in `datastore.py` regarding how
-  results are parsed.
-- **D)** The permissions required for the Service Account.
-
-**Rationale:**
-
-- **A)** Wrong — You'd select "BigQuery" or "Structured Data" instead of "Cloud
-  Storage" in the console.
-- **B)** Correct — The beauty of the tool abstraction is that the Agent just
-  sends a query string and expects text back. The implementation details of
-  *how* that text is found (PDFs vs. SQL rows) are encapsulated within the tool.
-- **C)** Wrong — Structured search results have a different response schema (
-  fields/properties) compared to unstructured chunks.
-- **D)** Wrong — You'd need BigQuery permissions.
-
-**Difficulty:** Medium  
-**Cognitive Level:** Analysis  
-**Learning Objective:** Connect the search tool to an ADK agent for grounded
-responses.
