@@ -90,9 +90,9 @@ What is the most likely missing step in your execution command?
 **Rationale:**
 
 - **A)** Wrong — ADK usually errors out earlier if the project is missing.
-- **B)** Correct — As emphasized in the lesson, ADK defaults to local/no-op
-  telemetry for development speed. You must explicitly pass `--otel_to_cloud` to
-  initialize the OpenTelemetry exporter that sends data to Google Cloud.
+- **B)** Correct — ADK defaults to local/no-op telemetry for development 
+  speed. You must explicitly pass `--otel_to_cloud` to initialize the 
+  OpenTelemetry exporter that sends data to Google Cloud.
 - **C)** Wrong — Highly unlikely.
 - **D)** Wrong — Unlikely to be the primary cause if other things work.
 
@@ -174,8 +174,7 @@ see exactly what "System Instructions" were sent to the LLM to verify if the
 prompt logic is correct.
 
 **Question:**  
-Using the Google Cloud Log Explorer technique demonstrated in the lesson, how
-can you find the specific log entry containing the system prompt?
+How can you find the specific log entry containing the system prompt?
 
 **Options:**
 
@@ -204,8 +203,8 @@ Log Explorer.
 ## Question 7
 
 **Scenario:**  
-Why is "Observability" described as a critical step for *evaluation* in this
-lesson, rather than just using a static test set?
+"Observability" is described as a critical step for *evaluation*, rather 
+than just using a static test set.
 
 **Question:**  
 Which of the following insights can **only** be gained through observability of
@@ -214,9 +213,8 @@ real-world traffic?
 **Options:**
 
 - **A)** Whether the code compiles without syntax errors.
-- **B)** Whether the LLM can answer "What is 2+2?".
-- **C)** Understanding the unexpected phrasing, intent, or "long tail" queries
-  that actual users are typing, which may differ from your test cases.
+- **B)** How the LLM handles common questions.
+- **C)** Seeing how your customers are using your agent.
 - **D)** Checking if the Google Cloud Project billing is enabled.
 
 **Rationale:**
@@ -231,42 +229,5 @@ real-world traffic?
 
 **Difficulty:** Medium  
 **Cognitive Level:** Evaluation  
-**Learning Objective:** Visualize and analyze agent activity in the Google Cloud
-Log Explorer.
-
-## Question 8
-
-**Scenario:**  
-You are using `demo-2` which involves nested agents (`root_agent` ->
-`search_agent_tool` -> `search_agent`). You notice that in the `adk web` UI, you
-only see the high-level tool call to `search_agent_tool` and then a long pause
-before the result.
-
-**Question:**  
-Why does the `adk web` UI not show the internal steps of the `search_agent` (
-like its own LLM calls or Google Search)?
-
-**Options:**
-
-- **A)** `adk web` is designed to show the perspective of the *current* agent
-  being tested; it treats the sub-agent as a "black box" tool.
-- **B)** The `search_agent` crashed silently.
-- **C)** OpenTelemetry does not support nested spans.
-- **D)** You need to run `adk web` twice in parallel.
-
-**Rationale:**
-
-- **A)** Correct — The `adk web` UI visualizes the execution flow of the agent
-  you connected to. Since `search_agent` is wrapped as a tool (
-  `search_agent_tool`), the root agent just sees it as a function call. To see
-  the internals, you must use the Trace Explorer (as shown in the lesson) which
-  captures the full distributed trace across all components.
-- **B)** Wrong — It returned a result eventually.
-- **C)** Wrong — OTEL excels at nested spans; the limitation here is the
-  specific view of the local testing UI vs. the full backend trace.
-- **D)** Wrong.
-
-**Difficulty:** Advanced  
-**Cognitive Level:** Analysis  
 **Learning Objective:** Visualize and analyze agent activity in the Google Cloud
 Log Explorer.
