@@ -7,17 +7,17 @@ window seats"). You are deciding between using ADK's **User State** and **Vertex
 AI Agent Engine Memory Bank**.
 
 **Question:**  
-Why would **User State** be the more appropriate choice for this specific
-requirement?
+What would be the more appropriate choice for this specific requirement?
 
 **Options:**
 
-- **A)** User State is persistent across sessions and designed for simple
+- **A)** User State - It is persistent across sessions and designed for simple
   key-value pairs, making it efficient for direct preference storage.
-- **B)** Agent Engine Memory Bank cannot store any structured data at all.
-- **C)** User State is automatically summarized by an LLM, ensuring the "gist"
-  of the preference is captured.
-- **D)** User State data is shared globally across all users of the application.
+- **B)** Memory Bank - User State cannot store any structured data at all.
+- **C)** User State - It is automatically summarized by an LLM, ensuring the
+  "gist" of the preference is captured.
+- **C)** Memory Bank - It is automatically summarized by an LLM, ensuring the
+  "gist" of the preference is captured.
 
 **Rationale:**
 
@@ -28,7 +28,8 @@ requirement?
   not its primary optimization vs. a simple KV store.
 - **C)** Wrong — Summarization is a feature of Memory Bank, not User State (
   which is exact).
-- **D)** Wrong — User State is scoped to the specific user.
+- **D)** Wrong — While this is a feature of Memory Bank, it is meant for 
+  summaries, not specific structured data.
 
 **Difficulty:** Medium  
 **Cognitive Level:** Analysis  
@@ -36,44 +37,6 @@ requirement?
 State, and Long-Term Memory.
 
 ## Question 2
-
-**Scenario:**  
-You have implemented the `memory_agent` as shown in the demo. However, when you
-run the agent, you notice that while the agent can recall information from
-*previous* sessions, it seems to have no memory of what you just said 5 minutes
-ago in the *current* active session.
-
-**Question:**  
-What is the most likely architectural explanation for this behavior?
-
-**Options:**
-
-- **A)** The `preload_memory_tool` only loads memories from the database (past
-  sessions); current session context is managed separately by the LLM's context
-  window (history).
-- **B)** The `auto_save_session_to_memory_callback` is overwriting the current
-  session data with old data.
-- **C)** The Agent Engine Memory Bank takes 24 hours to index new information.
-- **D)** You forgot to add `preload_memory_tool` to the `tools` list.
-
-**Rationale:**
-
-- **A)** Correct — Long-term memory (Memory Bank) bridges *gaps* between
-  sessions. "Short-term" memory within a session is typically handled by passing
-  the conversation history (turns) to the LLM. If the agent "forgets" recent
-  turns, it's usually a context window or history management issue, not a Memory
-  Bank issue (which focuses on *past* sessions).
-- **B)** Wrong — The callback *adds* to memory; it doesn't destructively
-  overwrite the live session state.
-- **C)** Wrong — Indexing is near real-time for this purpose.
-- **D)** Wrong — If missing, it wouldn't recall *past* sessions either.
-
-**Difficulty:** Advanced  
-**Cognitive Level:** Analysis  
-**Learning Objective:** Understand how to maintain context over extended
-sessions balancing performance and context length.
-
-## Question 3
 
 **Scenario:**  
 You are reviewing the `agent.py` code. You see the following line:
@@ -110,7 +73,7 @@ How does the `preload_memory_tool` differ in execution from a standard tool like
 **Learning Objective:** Learn how to maintain context over extended sessions
 balancing performance and context length.
 
-## Question 4
+## Question 3
 
 **Scenario:**  
 You have successfully deployed your agent. A user has a 2-hour long conversation
@@ -145,7 +108,7 @@ information to ensure it fits into the context window of future sessions?
 **Learning Objective:** Understand why we wish to update, prune, and manage an
 agent’s long-term memory.
 
-## Question 5
+## Question 4
 
 **Scenario:**  
 You are running the agent locally using `adk web`. You receive an error:
@@ -179,7 +142,7 @@ Where should you have provided this URI, and what does it represent?
 **Learning Objective:** Learn how to maintain context over extended sessions
 balancing performance and context length.
 
-## Question 6
+## Question 5
 
 **Scenario:**  
 You want to modify the `auto_save_session_to_memory_callback` to only save the
@@ -211,7 +174,7 @@ user's last message?
 **Learning Objective:** Understand why we wish to update, prune, and manage an
 agent’s long-term memory.
 
-## Question 7
+## Question 6
 
 **Scenario:**  
 Your organization is concerned about "Memory Poisoning" — where a user tells the
@@ -247,7 +210,7 @@ Agent Engine?
 **Learning Objective:** Understand why we wish to update, prune, and manage an
 agent’s long-term memory.
 
-## Question 8
+## Question 7
 
 **Scenario:**  
 In the `agent.py` code, the callback is registered as:
