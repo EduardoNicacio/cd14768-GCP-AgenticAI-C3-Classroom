@@ -72,8 +72,6 @@ configuration, and how should it be corrected?
 - **A)** Wrong — Performance is not the primary issue here, and the database
   type depends on the existing infrastructure.
 - **B)** Correct — Using `root` provides too much power to the tool server.
-  Sensitive data like passwords should never be hardcoded in YAML files;
-  instead, use `${VAR_NAME}` to pull from environment variables.
 - **C)** Wrong — Hardcoding is a maintenance and security risk.
 - **D)** Wrong — Multiple sources are not required for a single tool.
 
@@ -312,3 +310,42 @@ to behave based on the lesson's principles?
 **Cognitive Level:** Application  
 **Learning Objective:** Understand agent behavior and constraints when using
 tool-based database access.
+
+## Question 9
+
+**Scenario:**  
+A developer has finished building their agent and wants to share their
+`tools.yaml` file with the rest of their team by checking it into their shared
+git repository.
+
+**Question:**  
+What critical step should they take to ensure they are following security best
+practices before they commit and push the file?
+
+**Options:**
+
+- **A)** Encrypt the entire `tools.yaml` file using a specialized tool.
+- **B)** Ensure that all sensitive information, such as passwords and hostnames,
+  has been replaced with environment variable references (e.g.,
+  `${MYSQL_PASSWORD}`).
+- **C)** Delete the `tools.yaml` file and only share the `agent.py` file.
+- **D)** Change the file extension from `.yaml` to `.txt` to prevent
+  unauthorized execution.
+
+**Rationale:**
+
+- **A)** Wrong — While encryption is a technique, the standard practice for
+  configuration files like this is to use environment variables to keep secrets
+  out of version control.
+- **B)** Correct — Using environment variables ensures that sensitive data is
+  not stored in plain text in the repository, while still allowing the
+  configuration to be shared and used.
+- **C)** Wrong — The `tools.yaml` file is essential for the MCP server to
+  function.
+- **D)** Wrong — Changing the extension provides no security and breaks the
+  tool.
+
+**Difficulty:** Medium  
+**Cognitive Level:** Application  
+**Learning Objective:** Configure and connect an ADK agent to a Google Cloud
+SQL (MySQL) instance using best practices.
