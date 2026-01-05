@@ -65,8 +65,8 @@ query?
 - **C)** Correct — Modern models are trained to be efficient. For well-known,
   static facts present in their training data (like capitals), they typically
   skip the overhead of a tool call unless explicitly forced.
-- **D)** Wrong — While possible, the efficient behavior logic (C) is the
-  intended design explanation in the lesson.
+- **D)** Wrong — While possible, it is more likely that the LLM will return 
+  an error in this case.
 
 **Difficulty:** Medium  
 **Cognitive Level:** Application  
@@ -74,54 +74,6 @@ query?
 search the web.
 
 ## Question 3
-
-**Scenario:**  
-You want to modify the demo agent to *also* have a calculator tool. You update
-the code as follows:
-
-```python
-from google.adk.tools import google_search
-
-
-def calculator(a: int, b: int) -> int:
-  """Adds two numbers."""
-  return a + b
-
-
-tools = [google_search, calculator]
-```
-
-**Question:**  
-How does the ADK handle the coexistence of the native `google_search` tool and
-your custom Python `calculator` function?
-
-**Options:**
-
-- **A)** It will fail; you cannot mix native platform tools with custom Python
-  functions.
-- **B)** It works seamlessly; the ADK registers both, and the model selects the
-  appropriate one based on the user's query (e.g., "current news" vs. "add
-  numbers").
-- **C)** The `google_search` tool will override the calculator because it has
-  higher priority.
-- **D)** You must write a wrapper function around `google_search` to make it
-  look like a Python function.
-
-**Rationale:**
-
-- **A)** Wrong — ADK is designed to support hybrid tool sets.
-- **B)** Correct — The model sees a list of available tool definitions.
-  `google_search` is just another tool in the schema. The model uses its
-  reasoning capabilities to pick the right tool for the job.
-- **C)** Wrong — Priority is determined by relevance to the query.
-- **D)** Wrong — `google_search` is already an object compatible with the ADK's
-  tool registration system.
-
-**Difficulty:** Medium  
-**Cognitive Level:** Application  
-**Learning Objective:** Integrate the `google_search` tool into an ADK agent.
-
-## Question 4
 
 **Scenario:**  
 A user asks the agent: "Who won the latest Super Bowl and what was the score?"
@@ -156,7 +108,7 @@ response object contain that is essential for user trust?
 **Learning Objective:** Interpret the grounded responses, including citations
 and search metadata.
 
-## Question 5
+## Question 4
 
 **Scenario:**  
 You are reviewing the `agent.py` code provided in the demo.
@@ -169,8 +121,7 @@ root_agent = Agent(
 ```
 
 **Question:**  
-Unlike the database tools in the previous lesson (where we defined SQL in
-`tools.yaml`), where is the logic for the `google_search` tool defined?
+Where is the logic for the `google_search` tool defined?
 
 **Options:**
 
@@ -195,7 +146,7 @@ Unlike the database tools in the previous lesson (where we defined SQL in
 **Cognitive Level:** Analysis  
 **Learning Objective:** Integrate the `google_search` tool into an ADK agent.
 
-## Question 6
+## Question 5
 
 **Scenario:**  
 Your agent is deployed in a production environment. Users are complaining that
@@ -203,8 +154,8 @@ for some queries, the agent provides outdated information despite
 `google_search` being enabled.
 
 **Question:**  
-Which of the following prompt engineering strategies (as seen in
-`agent-prompt.txt`) would most effectively address this issue?
+Which of the following prompt engineering strategies would most effectively 
+address this issue?
 
 **Options:**
 
@@ -228,40 +179,7 @@ Which of the following prompt engineering strategies (as seen in
 **Learning Objective:** Observe how the model automatically decides when to
 search the web.
 
-## Question 7
-
-**Scenario:**  
-You attempt to run the demo code, but you receive a `403 Permission Denied`
-error related to the Grounding service.
-
-**Question:**  
-What is the most likely administrative cause for this error?
-
-**Options:**
-
-- **A)** You forgot to run `adk web`.
-- **B)** Your computer is not connected to the internet.
-- **C)** The Google Search Grounding API (or Vertex AI API) is not enabled in
-  your Google Cloud Project, or your project lacks access to this feature.
-- **D)** The `agent.py` file has a syntax error.
-
-**Rationale:**
-
-- **A)** Wrong — `adk web` is the UI; the error comes from the backend
-  execution.
-- **B)** Wrong — Connection errors usually manifest as timeouts or DNS errors,
-  not 403.
-- **C)** Correct — 403 is a standard permissions error. Grounding is a specific
-  cloud service that must be enabled (and potentially billed) in the project
-  console.
-- **D)** Wrong — Syntax errors cause parse failures, not runtime API permissions
-  errors.
-
-**Difficulty:** Medium  
-**Cognitive Level:** Application  
-**Learning Objective:** Integrate the `google_search` tool into an ADK agent.
-
-## Question 8
+## Question 6
 
 **Scenario:**  
 You are explaining the limitations of "Grounding with Google Search" to a
