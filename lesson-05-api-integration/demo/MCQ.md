@@ -52,23 +52,23 @@ exposure?
 
 - **A)** Critical Risk — The `SECRET_ID` is sufficient for anyone to retrieve
   the key from Secret Manager.
-- **B)** Low Risk — The `SECRET_ID` is just a reference name; an attacker would
+- **B)** High Risk — This ID allows bypassing the Application Default
+  Credentials check.
+- **C)** Low Risk — The `SECRET_ID` is just a reference name; an attacker would
   still need an authenticated Google Cloud account with specific IAM permissions
   to access the actual secret value.
-- **C)** No Risk — The `SECRET_ID` is encrypted by default.
-- **D)** High Risk — This ID allows bypassing the Application Default
-  Credentials check.
+- **D)** No Risk — The `SECRET_ID` is encrypted by default.
 
 **Rationale:**
 
 - **A)** Wrong — The ID alone does not grant access; authentication and
   authorization are required.
-- **B)** Correct — The security model relies on IAM. Only identities (
+- **B)** Wrong — ADC cannot be bypassed just by knowing a resource name.
+- **C)** Correct — The security model relies on IAM. Only identities (
   Users/Service Accounts) with explicit permission on that project and secret
   can access it. Knowing the name isn't enough.
-- **C)** Wrong — The ID itself isn't encrypted (it's a string in code), but it's
+- **D)** Wrong — The ID itself isn't encrypted (it's a string in code), but it's
   not the secret data.
-- **D)** Wrong — ADC cannot be bypassed just by knowing a resource name.
 
 **Difficulty:** Medium  
 **Cognitive Level:** Evaluation  
@@ -249,38 +249,36 @@ ADK tools.
 ## Question 8
 
 **Scenario:**  
-In `tools.py`, the `get_route_between_places` function uses the `requests`
-library to manually construct an HTTP POST request, whereas `get_place_details`
-uses the `google.maps.places_v1` client library.
+You are tasked with integrating a third-party "Financial Market Data API" that
+is *not* a Google service. This API requires a static API token in a custom
+header `X-Fin-Token`.
 
 **Question:**  
-What is a direct technical consequence of using `requests` for the Routes API
-integration as shown in this code?
+Which approach best applies the security and integration patterns demonstrated
+in this lesson?
 
 **Options:**
 
-- **A)** It is impossible to use Application Default Credentials (ADC) with
-  `requests`.
-- **B)** You must manually handle the construction of headers (like
-  `X-Goog-Api-Key`) and the serialization of the JSON payload.
-- **C)** The `requests` library provides built-in retries for 5xx errors, which
-  the client library lacks.
-- **D)** You cannot use Field Masks with raw HTTP requests.
+- **A)** Store the token in Google Secret Manager, retrieve it at runtime using
+  the `secretmanager` client (authenticated via ADC), and pass it in the HTTP
+  headers.
+- **B)** Since it is not a Google API, you must save the token in a `.env` file
+  and commit it to the repository.
+- **C)** Application Default Credentials (ADC) will automatically authenticate
+  your request to the Financial API without needing the token.
+- **D)** You must use the `google.maps.places_v1` library to wrap the request to
+  the Financial API.
 
 **Rationale:**
 
-- **A)** Wrong — You *can* use ADC with requests (by getting a token), but here
-  we are using an API Key, so ADC is only used to get the secret.
-- **B)** Correct — Using a client library abstracts away the HTTP details. Using
-  `requests` requires the developer to explicitly set headers, content types,
-  and structure the JSON body according to the API spec.
-- **C)** Wrong — `requests` does *not* retry by default; you have to implement
-  that (e.g., using `HTTPAdapter`). Client libraries often have built-in retry
-  logic.
-- **D)** Wrong — Field masks are just headers or parameters; they work fine with
-  raw HTTP.
+- **A)** Correct — The core lesson is using Secret Manager + ADC to manage *any*
+  secret, then using standard HTTP clients (`requests`) to use that secret.
+- **B)** Wrong — Never commit secrets.
+- **C)** Wrong — ADC authenticates you to Google Cloud services (like Secret
+  Manager), not to random third-party APIs.
+- **D)** Wrong — That library is specific to Places.
 
-**Difficulty:** Medium  
-**Cognitive Level:** Analysis  
-**Learning Objective:** Perform HTTP requests (POST) to interact with RESTful
-APIs.
+**Difficulty:** Advanced  
+**Cognitive Level:** Application  
+**Learning Objective:** Securely retrieve API keys from Google Cloud Secret
+Manager using Application Default Credentials (ADC).
