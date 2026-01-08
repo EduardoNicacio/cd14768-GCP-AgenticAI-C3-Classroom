@@ -481,7 +481,7 @@ real-world application**, not surface-level recall.
 ## **Task**
 
 I will ask you to generate the multiple-choice questions, or MCQs, based on 
-the demo material for a specific lesson. You should read the files 
+the demo and exercise material for a specific lesson. You should read the files 
 associated with that lesson, focusing on the `CLASSROOM-README.md` and 
 `video-outline.md` files, but also being sure to incorporate the major 
 concepts from other files.
