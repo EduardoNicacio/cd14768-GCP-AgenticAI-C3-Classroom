@@ -212,3 +212,75 @@ What is the correct technical answer?
 **Difficulty:** Medium  
 **Cognitive Level:** Evaluation  
 **Learning Objective:** Understand the concept of "Grounding" in LLMs.
+
+## Question 7
+
+**Scenario:**
+In the exercise solution, the `structured_search_agent` is initialized with
+`tools=[AgentTool(agent=search_agent)]`.
+
+**Question:**
+What is the primary function of the `AgentTool` class in this context?
+
+**Options:**
+
+- **A)** It converts the agent's Python code into a REST API endpoint.
+- **B)** It wraps an ADK Agent instance so that it can be invoked by another
+  agent as a standard tool.
+- **C)** It forces the wrapped agent to only use Google Search.
+- **D)** It is a debugging utility that logs all internal state changes of the
+  agent.
+
+**Rationale:**
+
+- **A)** Wrong — It remains an in-process Python object.
+- **B)** Correct — `AgentTool` adapts the `Agent` interface (which processes
+  prompts) into the `Tool` interface (which takes function arguments and returns
+  a string), allowing for hierarchical composition.
+- **C)** Wrong — The wrapped agent can have any tools.
+- **D)** Wrong — It is for orchestration, not just debugging.
+
+**Difficulty:** Medium
+**Cognitive Level:** Conceptual
+**Learning Objective:** Implement `AgentTool` to wrap agents as tools.
+
+## Question 8
+
+**Scenario:**
+The solution architecture creates a chain: `root_agent` calls
+`structured_search_agent`, which calls `search_agent`. The `search_agent` has
+the `google_search` tool, while the `root_agent` has the calculation tools.
+
+**Question:**
+Why is this separation into different agents necessary, rather than giving one
+single agent all the tools and the `output_schema`?
+
+**Options:**
+
+- **A)** The ADK enforces a limit of 5 tools per agent to optimize the size 
+  of the tool list provided to the LLM. Too many tools can cause the LLM to 
+  behave erratically.
+- **B)** To improve code readability, although a single agent would work
+  technically.
+- **C)** "Grounding with Google Search" often cannot be combined with custom
+  Function Calling tools or structured output enforcement in the same inference
+  step due to API limitations.
+- **D)** The `google_search` tool consumes too many tokens to run alongside
+  other tools.
+
+**Rationale:**
+
+- **A)** Wrong — There is no such strict low limit in the ADK. While too 
+  many tools can cause problems, this does not address that issue.
+- **B)** Wrong — While modularity is good, the primary driver here is the
+  technical constraint imposed by the `google_search` tool.
+- **C)** Correct — As noted in the lesson, mixing the specific "Grounding"
+  feature with other tool definitions or JSON schema constraints can lead to
+  conflicts or errors in the model's processing pipeline. Separation ensures
+  each agent handles one "mode" of operation.
+- **D)** Wrong — Token consumption is not the primary conflict.
+
+**Difficulty:** Advanced
+**Cognitive Level:** Analysis
+**Learning Objective:** Orchestrate a chain of agents to work around API
+constraints.
