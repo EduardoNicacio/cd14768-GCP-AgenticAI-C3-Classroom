@@ -13,6 +13,27 @@ QUESTIONS = [
     "What is one thing you want to learn?",
 ]
 
+"""
+The "Brainstorming" Agent
+=========================
+
+SESSION 1 (Setting the Preference)
+----------------------------------
+User: "I want to answer 3 questions."
+  -> Agent stores "user:num_iterations = 3"  <-- PERSISTS FOREVER
+  -> Agent stores "current_iteration = 1"    <-- VANISHES AT END OF SESSION
+
+      [ ... User closes browser ... ]
+
+SESSION 2 (The "Magic" Memory)
+----------------------------------
+User: "Let's start."
+  -> Agent loads "user:num_iterations" (It remembers 3!)
+  -> Agent initializes "current_iteration = 0" (New session, fresh counter)
+  -> Agent: "Okay, Question 1 of 3..."
+"""
+
+
 def set_iterations(num_iterations: int, tool_context: ToolContext):
     """
     Sets the number of iterations for the task.
