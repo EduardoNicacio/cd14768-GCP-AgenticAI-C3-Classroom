@@ -34,16 +34,26 @@ Implementing Database Interaction with MCP
         tool, and the query that will run for each tool. The MCP Toolbox 
         takes care of other issues for us.
 - [Setup Walkthrough] Cloud SQL & Toolbox
-    - **Cloud SQL**: Show the instance in Google Cloud Console.
-        - Mention creating a MySQL instance.
-          - This demo was setup for MySQL, but the MCP Database Toolbox 
-            can use many different kinds of databases.
-        - Mention creating a restricted user (`toolbox`) for security.
-        - Mention authorizing the local IP address.
     - **MCP Toolbox**:
-        - Explain that we downloaded the `toolbox` binary.
-        - Show the command to run it: `./toolbox --tools-file tools.yaml`.
-        - Explain that this server runs locally and handles the DB connection.
+      1. Visit the MCP Toolbox page
+      2. Scroll down and select the platform you're running on
+      3. Use those commands to download the program
+      4. I've renamed it to mcp-toolbox to make it a more obvious name
+    - **Cloud SQL**: Show the instance in Google Cloud Console.
+      1. In the Google Cloud Console, go to **SQL**.
+      2. Click **Create Instance** -> **MySQL**.
+      3. Select **Enterprise** edition (Sandbox preset is fine for demos).
+      4. Set the ID, root password
+      5. Select single region **us-central1** (or your preferred region).
+      6. In "Customize your instance", select a minimal machine type (e.g., **Shared
+         core** -> **1 vCPU**).
+      7. Click **Create Instance**.
+      8. Once your instance is created... you can get the ip address which 
+         you will use to access the database and set it in your `.env` file
+    - **Load Database**:
+      1. mysql -h <ip address> -u root -p
+      2. \. demo_database.sql
+      3. GRANT SELECT ON `demo`.* TO `toolbox`@`%`;
 - [tools.yaml] The Heart of the Demo
     - **Sources**: 
       - Show the `sources` section connecting to MySQL using env
