@@ -3,7 +3,6 @@ from google.api_core.client_options import ClientOptions
 from google.cloud import discoveryengine_v1 as discoveryengine
 
 # Definition of a tool that accesses a Vertex AI Search Datastore
-
 #
 # This is based on code provided by Google at
 # https://cloud.google.com/generative-ai-app-builder/docs/samples/genappbuilder-search
@@ -71,8 +70,8 @@ def datastore_search_tool( search_query: str ):
     """
     try:
         results = search(
-            project_id=os.environ.get("DATASTORE_PROJECT_ID"),
-            engine_id=os.environ.get("DATASTORE_ENGINE_ID"),
+            project_id=os.environ.get("DATASTORE_PROJECT_ID", ""),
+            engine_id=os.environ.get("DATASTORE_ENGINE_ID", ""),
             location=os.environ.get("DATASTORE_LOCATION", "global"),
             search_query=search_query,
         )
